@@ -3,134 +3,177 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WALL</title>
+<title>WALL GET KEY</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600;800&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial;}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
 body{
     height:100vh;
-    background:linear-gradient(135deg,#000,#111,#000);
+    background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);
     display:flex;
     justify-content:center;
     align-items:center;
+    overflow:hidden;
     color:white;
 }
-.container{text-align:center;width:90%;max-width:600px;}
-h1{
-    font-size:55px;
-    color:#00f2ff;
-    text-shadow:0 0 20px #00f2ff;
-    margin-bottom:25px;
+
+.container{
+    width:380px;
+    padding:40px;
+    background:rgba(255,255,255,0.05);
+    backdrop-filter:blur(15px);
+    border-radius:20px;
+    box-shadow:0 0 40px rgba(0,0,0,0.5);
+    text-align:center;
+    position:relative;
 }
-.contact{font-size:14px;color:#aaa;margin-bottom:35px;}
-.contact span{display:block;margin-top:5px;}
+
+h1{
+    font-size:38px;
+    font-weight:800;
+    background:linear-gradient(90deg,#00f5ff,#ff00ff);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    margin-bottom:20px;
+}
+
+.info{
+    margin-bottom:25px;
+    font-size:14px;
+    opacity:0.8;
+}
+
 .btn{
-    padding:15px 40px;
-    font-size:18px;
-    background:#00f2ff;
-    color:black;
+    padding:14px 30px;
     border:none;
-    border-radius:30px;
+    border-radius:50px;
+    background:linear-gradient(90deg,#00f5ff,#ff00ff);
+    color:white;
+    font-weight:600;
+    font-size:16px;
     cursor:pointer;
     transition:0.3s;
-    box-shadow:0 0 15px #00f2ff;
+    box-shadow:0 0 20px rgba(255,0,255,0.6);
 }
+
 .btn:hover{
-    transform:scale(1.05);
-    box-shadow:0 0 30px #00f2ff;
+    transform:scale(1.08);
+    box-shadow:0 0 30px rgba(0,255,255,0.9);
 }
-.key-box{
-    margin-top:40px;
-    padding:20px;
-    background:#111;
-    border-radius:15px;
-    box-shadow:0 0 20px #00f2ff;
+
+#keyBox{
+    margin-top:25px;
+    padding:15px;
+    border-radius:12px;
+    background:rgba(0,0,0,0.5);
+    font-size:15px;
+    display:none;
 }
-.key{color:#00f2ff;font-size:18px;margin-top:10px;}
+
 .about{
-    margin-top:40px;
+    margin-top:30px;
     font-size:13px;
-    color:#888;
-    border-top:1px solid #333;
-    padding-top:20px;
+    opacity:0.7;
+}
+
+.circle{
+    position:absolute;
+    width:200px;
+    height:200px;
+    border-radius:50%;
+    background:radial-gradient(circle,#ff00ff,transparent);
+    top:-50px;
+    right:-50px;
+    filter:blur(60px);
+}
+
+.circle2{
+    position:absolute;
+    width:200px;
+    height:200px;
+    border-radius:50%;
+    background:radial-gradient(circle,#00f5ff,transparent);
+    bottom:-50px;
+    left:-50px;
+    filter:blur(60px);
 }
 </style>
 </head>
 <body>
 
 <div class="container">
+    <div class="circle"></div>
+    <div class="circle2"></div>
 
-<h1>WALL</h1>
+    <h1>WALL</h1>
 
-<div class="contact">
-    <span>Telegram: @yourtelegram</span>
-    <span>Zalo: 0123456789</span>
-</div>
+    <div class="info">
+        Telegram: @yourtelegram <br>
+        Zalo: 0123456789
+    </div>
 
-<button class="btn" onclick="createLink()">GET KEY</button>
+    <button class="btn" onclick="redirectLink()">GET KEY</button>
 
-<div id="keyArea"></div>
+    <div id="keyBox"></div>
 
-<div class="about">
-    <p>Chào mừng bạn đến với WALL.</p>
-    <p>Dịch vụ nhanh – bảo mật – chuyên nghiệp.</p>
-    <p>Hỗ trợ 24/7 – Uy tín hàng đầu.</p>
-</div>
-
+    <div class="about">
+        Hệ thống get key bảo mật cao.<br>
+        Key có thời hạn và giới hạn IP.<br>
+        Vui lòng vượt link để nhận key.
+    </div>
 </div>
 
 <script>
+// ==== LINK4M REDIRECT ====
+function redirectLink(){
+    const token = Math.random().toString(36).substring(2);
+    localStorage.setItem("pendingToken", token);
 
-// =======================
-// CONFIG
-// =======================
+    // Thay link4m của bạn vào đây
+    window.location.href = "https://link4m.co/YOUR_LINK?token=" + token;
+}
 
-const API_KEY = "694be40f3b197f730b6bcf6e";
+// ==== CHECK KHI QUAY LẠI ====
+const urlParams = new URLSearchParams(window.location.search);
+const token = urlParams.get("token");
 
-// Link trả về sau khi vượt xong
-const RETURN_URL = window.location.origin + window.location.pathname + "?success=true";
+if(token){
+    const savedToken = localStorage.getItem("pendingToken");
 
-// =======================
-// TẠO LINK LINK4M
-// =======================
+    if(token === savedToken){
 
-async function createLink(){
+        const key = generateKey();
+        showKey("KEY: " + key);
 
-    try{
+        localStorage.removeItem("pendingToken");
 
-        const response = await fetch(`https://link4m.com/api?api=${API_KEY}&url=${encodeURIComponent(RETURN_URL)}`);
-        const data = await response.json();
-
-        if(data.status === "success"){
-            window.location.href = data.shortenedUrl;
-        } else {
-            alert("Lỗi tạo link!");
-        }
-
-    }catch(error){
-        alert("Không kết nối được API!");
+    }else{
+        showKey("❌ Token không hợp lệ!");
     }
 }
 
-// =======================
-// HIỆN KEY SAU KHI VƯỢT
-// =======================
-
-const params = new URLSearchParams(window.location.search);
-const success = params.get("success");
-
-if(success === "true"){
-
-    const randomKey = "WALL-" + Math.random().toString(36).substring(2,10).toUpperCase();
-
-    document.getElementById("keyArea").innerHTML = `
-        <div class="key-box">
-            <h3>Vượt link thành công ✅</h3>
-            <div class="key">KEY: ${randomKey}</div>
-        </div>
-    `;
+function generateKey(){
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let key = "WALL-";
+    for(let i=0;i<8;i++){
+        key += chars.charAt(Math.floor(Math.random()*chars.length));
+    }
+    return key;
 }
 
+function showKey(text){
+    const box = document.getElementById("keyBox");
+    box.style.display = "block";
+    box.innerHTML = text;
+}
 </script>
 
 </body>
